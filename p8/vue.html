@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NGOK</title>
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css">
+  <link rel="stylesheet" href="apap.css">
+  <link rel="stylesheet" href="https://unpkg.com/vue/dist/vue.css">
+  <script src="https://unpkg.com/vue@2.6.14/dist/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+    integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js"
+    integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
+  </script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js"
+    integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
+  </script>
+</head>
+
+<body>
+  <div class="container" id="app">
+    <nav class="navbar navbar-light bg-light fixed-top position-relative p-4">
+      <div class="navbar-text ml-auto d-flex position-absolute end-0">
+        <button class="btn btn-sm btn-outline-success" v-on:click="style.status=!style.status">
+          <i class="fas fa-dollar-sign"></i>
+        </button>
+        <div class="ml-2">
+          <button class="btn btn-success btn-sm dropdown-toggle" id="dropdownCart" data-toggle="dropdown"
+            aria-haspopup="true" aria-expanded="false">
+            <!-- <b>cart:</b> -->
+            <span class="badge bg-success">{{ cartQty }}</span>
+            <i class="fas fa-shopping-cart mx-2"></i>
+            {{cartTotal | currencyFormat}}
+          </button>
+          <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownCart" style="right: 0; left: auto;">
+            <div v-for="(item, index) in cart" :key="index">
+              <div class="dropdown-item-text text-nowrap text-right">
+                <span class="badge align-text-top mr-1 bg-warning">
+                  {{item.qty}}
+                </span>
+                {{item.product.name}}
+                <b>{{item.product.price * item.qty | currencyFormat}}</b>
+                <a href="#" class="badge bg-danger text-white" style="text-decoration:none;"
+                  v-on:click.stop="deleteItem(index)">-</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+    <h1>This is my RayShop</h1>
+    <transition name="custom" enter-active-class="animate_animated animate_fadeInDown"
+      leave-active-class="animate__animated animate__fadeOutDown">
+      <div v-if="style.status">
+        <div :class="statusSlider" class="d-flex align-items-center">
+          <label for="" v-bind:class="style.label">Max</label>
+          <input type="number" class="form-control mx-2" :style="{'width': '60px', 'text-align': 'center'}"
+            v-model="harga">
+          <input type="range" class="custom-range" min="0" max="200" v-model="harga">
+        </div>
+      </div>
+    </transition>
+
+    <transition-group name="fade" tag="div" @beforeEnter="before" @enter="enter" @leave="leave">
+      <div class="row d-flex mb-3 align-items-center" v-for="(item, index) in product" :key="item.id"
+        v-if="Number(item.price) <= harga" :data-index="index">
+        <div class="col-1 m-auto">
+          <button class="btn btn-info" v-on:click="addItem(item)">+</button>
+        </div>
+        <div class="col-sm-4">
+          <img class="img-fluid" :src="item.image" :alt="item.name" />
+        </div>
+        <div class="col">
+          <h2 class="text-info">{{item.name}}</h2>
+          <p>{{item.description}}</p>
+          <div class="h3"><price></price></div>
+        </div>
+      </div>
+    </transition-group>
+  </div>
+
+
+
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous" />
+
+  <script src="apap.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NGOK</title>
+</head>
+
+<body>
+  <div class="container" id="app">
+    <nav class="navbar navbar-light bg-light">
+      <div class="navbar-text ml-auto">
+        <b>cart: </b>
+        <span class="badge badge-pill badge-success" style="background-color:green">{{ cart.length }}</span>
+      </div>
+    </nav>
+    <div class="form-inline mr-auto">
+      <label for="" class="font-weight-bold mr-2">Max</label>
+      <input type="number" class="form-control w-25" v-model="harga">
+    </div>
+    <input type="range" class="custom-range" min="0" max="200" v-model="harga">
+    <div class="row d-flex mb-3 align-items-center" v-for="item in product" v-if="Number(item.price) <= harga">
+      <div class="col-1 m-auto">
+        <button class="btn btn-info" v-on:click="addItem(item)">+</button>
+      </div>
+      <div class="col-sm-4">
+        <img class="img-fluid" v-bind:src="item.image" alt="" />
+      </div>
+      <div class="col">
+        <h1>{{item.name}}</h1>
+        <div class>
+          <p>{{item.description}}</p>
+        </div>
+        
+        <div class="h3">${{item.price}}</div>
+
+      </div>
+
+    </div>
+  </div>
+
+
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.0/dist/vue.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous" />
+
+  <script src="app.js"></script>
+</body>
+
+</html>

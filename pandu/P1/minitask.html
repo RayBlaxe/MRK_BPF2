@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        let saldo=0;
+        function getTime(){
+            var date = new Date();
+            var hari = date.getDay();
+            day=["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+            alert("Hari ini adalah hari "+day[hari]);
+            
+        }
+        var rubah
+        while (true) {
+            let pil=prompt("1. Setor duit\n2. Tarik duit\n3. Cek saldo\n4. Keluar\n5.Waktu");
+            
+            if (pil==1) {
+                rubah = parseInt(prompt("Setor duit?"))
+                saldo+=rubah
+                rubah=0
+            } else if (pil==2) {
+                rubah = parseInt(prompt("Tarik duit?"))
+                saldo-=rubah
+                rubah=0
+            } else if (pil==3) {
+                alert("Saldo sisa :"+saldo);
+            } else if (pil==4) {
+                break;  
+            
+            } else if (pil==5) {
+                getTime();
+            }
+            
+            
+        }
+
+    </script>
+</body>
+</html>
