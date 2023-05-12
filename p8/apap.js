@@ -1,12 +1,63 @@
-Vue.component('price',{
-    data: function(){ 
-        return {
-            prefix: '$',
-            value: 34.09,
-            precission: 2
+Vue.component('price', {
+    data: function () {
+        return {}
+    },
+    props: {
+        value: Number,
+        prefix: {
+            type: String,
+            default: '$'
+        },
+        precission: {
+            type: Number,
+            default: 2
         }
     },
     template: '<span>{{ this.prefix + Number.parseFloat(this.value).toFixed(this.precission) }}</span>'
+});
+
+Vue.component('product-list', {
+    props: ['product', 'harga'],
+    methods: {
+        before: function (el) {
+            el.className = 'd-none';
+        },
+        enter: function (el) {
+            var delay = el.dataset.index * 100;
+            setTimeout(function () {
+                el.className = 'row d-flex mb-3 align-items-center animate__animated animate__bounceInLeft'
+            }, delay)
+        },
+        leave: function (el) {
+            var delay = el.dataset.index * 100;
+            setTimeout(function () {
+                el.className = 'row d-flex mb-3 align-items-center animate__animated animate__fadeOutRight'
+            }, delay)
+        }
+    },
+    template: `
+        <transition-group name="fade" tag="div" @beforeEnter="before" @enter="enter" @leave="leave">
+        <div class="row d-none mb-3 align-items-center" v-for="(item, index) in product" :key="item.id"
+        v-if="Number(item.price) <= harga" :data-index="index">
+        <div class="col-1 m-auto">
+        <button class="btn btn-info" v-on:click="$emit('add',item)">+</button>
+        </div>
+        <div class="col-sm-4">
+        <img class="img-fluid" :src="item.image" :alt="item.name">
+        </div>
+        <div class="col">
+        <h2 class="text-info">{{ item.name }}</h2>
+        <p>{{item.description}}</p>
+        <div class="h3">
+        <price v-bind:value="Number(item.price)"
+        v-bind:prefix="'$'"
+        v-bind:precission="2">
+        </price>
+        </div>
+        </div>
+        </div>
+        </transition-group>
+        `
 });
 var app = new Vue({
     imgClass: 'img-fluid',
