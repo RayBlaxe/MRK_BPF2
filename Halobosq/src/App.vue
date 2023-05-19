@@ -1,11 +1,13 @@
 <template>
   <div id="app" class="container mt-5">
     <h1>IDShop</h1>
-    <product-list :product="product" :harga="harga" />
+    <price-slider :status="status" :harga.sync="harga" />
+    <product-list :product="product" :harga="harga" @add="addItem" />
   </div>
 </template>
 
 <script>
+import PriceSlider from "./components/priceSlider.vue";
 import ProductList from "./components/productList.vue";
 // import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 // import Price from "./components/Price.vue";
@@ -16,9 +18,12 @@ export default {
     return {
       harga: 50,
       product: [],
+      cart: [],
+      status: true,
     };
   },
   components: {
+    PriceSlider,
     ProductList,
     // FontAwesomeIcon,
     // Price,
@@ -29,6 +34,27 @@ export default {
       .then((data) => {
         this.product = data;
       });
+  },
+  methods: {
+    addItem: function (product) {
+      var productIndex;
+      var productExist = this.cart.filter(function (item, index) {
+        if (item.product.id == Number(product.id)) {
+          productIndex = index;
+          return true;
+        } else {
+          return false;
+        }
+      });
+      if (productExist.length) {
+        this.cart[productIndex].qty++;
+      } else {
+        this.cart.push({
+          product: product,
+          qty: 1,
+        });
+      }
+    },
   },
 };
 </script>
