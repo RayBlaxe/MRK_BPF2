@@ -1,6 +1,13 @@
 <template>
   <div id="app" class="container mt-5">
     <h1>IDShop</h1>
+    <nav-bar
+      :cart="cart"
+      :cartQty="cartQty"
+      :cartTotal="cartTotal"
+      @toggle="toggleSliderStatus"
+    ></nav-bar>
+
     <price-slider :status="status" :harga.sync="harga" />
     <product-list :product="product" :harga="harga" @add="addItem" />
   </div>
@@ -9,6 +16,7 @@
 <script>
 import PriceSlider from "./components/priceSlider.vue";
 import ProductList from "./components/productList.vue";
+import NavBar from "./components/navbar.vue";
 // import { FontAwesomeIcon } from "@fortawesome/vue-fontawesome";
 // import Price from "./components/Price.vue";
 
@@ -25,6 +33,7 @@ export default {
   components: {
     PriceSlider,
     ProductList,
+    NavBar,
     // FontAwesomeIcon,
     // Price,
   },
@@ -35,7 +44,26 @@ export default {
         this.product = data;
       });
   },
+  computed: {
+    cartTotal: function () {
+      let sum = 0;
+      for (let key in this.cart) {
+        sum += this.cart[key].product.price * this.cart[key].qty;
+      }
+      return sum;
+    },
+    cartQty: function () {
+      let qty = 0;
+      for (let key in this.cart) {
+        qty += this.cart[key].qty;
+      }
+      return qty;
+    },
+  },
   methods: {
+    toggleSliderStatus: function () {
+      this.status = !this.status;
+    },
     addItem: function (product) {
       var productIndex;
       var productExist = this.cart.filter(function (item, index) {
